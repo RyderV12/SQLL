@@ -128,13 +128,68 @@ void Queue::display()
     cout << endl;
 }
 //======================= DIJKSTRA'S TWO STACK ===========================
-double evaluateExpression(string& expr) 
-{
-    // complete this using stacks
+double evaluateExpression(string& expr) {
+    Stack operators;
+    Stack values;  // Still a string stack, stores string representations of numbers
+
+    stringstream ss(expr);
+    string token;
+
+    while (ss >> token) {
+        if (token == "(") {
+            // do nothing
+        } else if (token == "+" || token == "-" || token == "*" || token == "/") {
+            operators.push(token);
+        } else if (token == ")") {
+            // Pop operator
+            string op = operators.pop();
+
+            // Pop two values and convert to double
+            double val2 = stod(values.pop());
+            double val1 = stod(values.pop());
+
+            // Compute result
+            double result;
+            if (op == "+") result = val1 + val2;
+            else if (op == "-") result = val1 - val2;
+            else if (op == "*") result = val1 * val2;
+            else if (op == "/") result = val1 / val2;
+            else throw runtime_error("Unsupported operator: " + op);
+
+            // Convert result to string and push it back
+            string temp = to_string(result);
+            values.push(temp);
+        } else {
+            // Assume it's a number, push as string
+            values.push(token);
+        }
+    }
+
+    // Final result should be the only item left
+    return stod(values.pop());
 }
 
 // ============= JOSEPHUS PROBLEM ===========================
 void josephus(int n, int k) 
 {
-    // complete this using queue
+    Queue q;
+    for (int i = 1; i <= n; i++) 
+    {
+        string person = "Person" + to_string(i);
+        q.enqueue(person);
+        // fills queue
+    }
+
+    cout << "Elimination order: ";
+    while (!q.isEmpty()) 
+    {
+        for (int i = 1; i < k; i++) 
+        {
+            string person = q.dequeue();
+            q.enqueue(person);
+            //moves to back of queue
+        }
+        cout << q.dequeue() << " ";
+    }
+    cout << endl;
 }
