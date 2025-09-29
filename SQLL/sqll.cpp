@@ -130,7 +130,7 @@ void Queue::display()
 //======================= DIJKSTRA'S TWO STACK ===========================
 double evaluateExpression(string& expr) {
     Stack operators;
-    Stack values;  // Still a string stack, stores string representations of numbers
+    Stack values; 
 
     stringstream ss(expr);
     string token;
@@ -144,11 +144,11 @@ double evaluateExpression(string& expr) {
             // Pop operator
             string op = operators.pop();
 
-            // Pop two values and convert to double
+            // Pop two values
             double val2 = stod(values.pop());
             double val1 = stod(values.pop());
 
-            // Compute result
+            // solve it
             double result;
             if (op == "+") result = val1 + val2;
             else if (op == "-") result = val1 - val2;
@@ -156,16 +156,16 @@ double evaluateExpression(string& expr) {
             else if (op == "/") result = val1 / val2;
             else throw runtime_error("Unsupported operator: " + op);
 
-            // Convert result to string and push it back
+            // Changes to string and pushes it back
             string temp = to_string(result);
             values.push(temp);
         } else {
-            // Assume it's a number, push as string
+            // push it
             values.push(token);
         }
     }
 
-    // Final result should be the only item left
+    // returnanswer
     return stod(values.pop());
 }
 
